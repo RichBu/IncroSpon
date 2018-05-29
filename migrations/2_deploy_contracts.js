@@ -1,5 +1,5 @@
-var Dog = artifacts.require("Dog");
+var IncroSpon = artifacts.require("IncroSpon");
 
 module.exports = function(deployer) {
-	deployer.deploy(Dog, "DogToken", "DOG");
+	deployer.deploy(IncroSpon, "IncroSpon" );
 };
