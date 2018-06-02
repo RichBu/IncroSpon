@@ -2,7 +2,7 @@ pragma solidity ^0.4.17;
 
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract IncroSpon is Ownable{ //is ERC721Token, Ownable {
+contract IncroSpon is Ownable{ 
     //string public name = 'Incro-Sponsor';
 
     Campaign[] campaigns;
@@ -57,9 +57,9 @@ contract IncroSpon is Ownable{ //is ERC721Token, Ownable {
     }
 
 
-    function getCampaign_rec( uint256 _campID ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
-        require( _campID <= campaigns.length );
-        Campaign memory cr = campaigns[_campID];
+    function getCampaign_rec( uint256 _camp_id ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        require( _camp_id <= campaigns.length );
+        Campaign memory cr = campaigns[_camp_id];
         return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
 
@@ -83,38 +83,75 @@ contract IncroSpon is Ownable{ //is ERC721Token, Ownable {
         return sponsors.length;
     }
 
+
     //this function will return how many sponsors for a campaign
-    function getNumSponsorsForCampaign( uint256 _campID ) public view returns( uint256 )  {
-        require( _campID <= campaigns.length );
+    function getNumSponsorsForCampaign( uint256 _camp_id ) public view returns( uint256 )  {
+        require( _camp_id <= campaigns.length );
         uint256 numMatches = 0;
         for(uint256 i=0; i<= sponsors.length; i++)
         {
-            if (sponsors[i].camp_id == _campID )  numMatches++;
+            if (sponsors[i].camp_id == _camp_id )  numMatches++;
         }  
         return numMatches;        
     }
 
-    function getSponsor_rec( uint256 _campID ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
-        require( _campID <= campaigns.length );
-        Campaign memory cr = campaigns[_campID];
+
+    function getSponsorInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
+    public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        //this will return a matching record for a sponsor, which is the _matchNum
+        // can find out the number of matching items by running the getNum function
+        require( _camp_id <= campaigns.length );
+        uint256 numMatches = 0;
+        Campaign memory cr;
+        for(uint256 i=0; i<= sponsors.length; i++)
+        {
+            if (sponsors[i].camp_id == _camp_id )  {
+                numMatches++;
+                if (numMatches == _matchNum) {
+                    cr = campaigns[_camp_id];
+                    break;
+                }
+            }
+        }    
         return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
     
-
+    
     function getParticipantsLen() view external returns(uint256){
         return participants.length;
     }
 
 
-    function getNumParticipantForCampaign( uint256 _campID ) public view returns( uint256 )  {
+    function getNumParticipantForCampaign( uint256 _camp_id ) public view returns( uint256 )  {
         //this function will return how many participants for a campaign
-        require( _campID <= campaigns.length );
+        require( _camp_id <= campaigns.length );
         uint256 numMatches = 0;
         for(uint256 i=0; i<=participants.length; i++)
         {
-            if (participants[i].camp_id == _campID )  numMatches++;
+            if (participants[i].camp_id == _camp_id )  numMatches++;
         }  
         return numMatches;        
+    }
+
+
+    function getParticipantInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
+    public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        //this will return a matching record for a participant, which is the _matchNum
+        // can find out the number of matching items by running the getNum function
+        require( _camp_id <= campaigns.length );
+        uint256 numMatches = 0;
+        Campaign memory cr;
+        for(uint256 i=0; i<= participants.length; i++)
+        {
+            if (sponsors[i].camp_id == _camp_id )  {
+                numMatches++;
+                if (numMatches == _matchNum) {
+                    cr = campaigns[_camp_id];
+                    break;
+                }
+            }
+        }    
+        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
 
 
