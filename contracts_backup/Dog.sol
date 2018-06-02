@@ -1,7 +1,7 @@
 pragma solidity ^0.4.17;
 
-import 'zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol';
-import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
+import "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
+import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract Dog is ERC721Token, Ownable{ //is ERC721Token, Ownable {
     Dogg[] doggs;

@@ -1,44 +1,138 @@
 pragma solidity ^0.4.17;
 
-import 'zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract IncroSpon is ERC721Token, Ownable{ //is ERC721Token, Ownable {
-    Dogg[] doggs;
+contract IncroSpon is Ownable{ //is ERC721Token, Ownable {
+    //string public name = 'Incro-Sponsor';
 
-    struct Dogg {
-        string image_url;
-        string name;
-        uint8 age;
+    Campaign[] campaigns;
+    Sponsor[] sponsors;
+    Participant[] participants;
+    EventRec[] eventrecs;
+
+    struct Campaign {
+        uint256 camp_id;        // 1
+        string name;            // 2
+        address started_by;     // 3
+        uint256 end_date;       // 4
+        int32 unit_goal;        // 5
+        int32 unit_so_far;      // 6
+        uint256 wei_paid_out;   // 7
+        uint256 wei_in_escrow;  // 8
     }
 
-    //I had to do this or it'll give me this error
-    /*
-        Error encountered, bailing. Network state unknown. Review successful transactions manually.
-        Error: The contract code couldn't be stored, please check your gas amount.
-    */
-    function IncroSpon(string _name, string _symbol) ERC721Token(_name, _symbol) Ownable() public{ }
-
-    function getDogsLen() view external returns(uint256){
-        return doggs.length;
+    struct Sponsor {
+        address addr_spon;      // 1
+        uint256 camp_id;        // 2
+        address addr_part;      // 3
+        address addr_pay_to;    // 4
+        int8 unit;              // 5
+        uint256 wei_per_unit;   // 6
+        uint256 wei_in_escrow;  // 7
     }
 
-    function mint(string _image_url, string _name, uint8 _age) external onlyOwner{
-        //First we define an in memory dogg variable. In memory means that lifespan of this variable will be limited by the execution scope (it lives just inside this function)
-        Dogg memory dogg = Dogg({ image_url: _image_url, name: _name, age: _age });
-        uint doggId = doggs.push(dogg) - 1; //the push method returns the new length
-
-        //Checks that the recipient address is valid (not 0), otherwize throws an error
-        //Creates a token and assigns it an owner
-        //Fires Transfer event.
-        _mint(msg.sender, doggId);
+    struct Participant {
+        address addr_part;      // 1
+        uint256 camp_id;        // 2
+        string name_part;       // 3
+        int8 unit;              // 4
+        int32 unit_goal;        // 5
+        uint256 date_start;     // 6
+        uint256 date_end;       // 7
     }
 
-    function getDog( uint _doggId ) public view returns(string image_url, string name, uint8 age){
-        Dogg memory dogg = doggs[_doggId];
-
-        image_url = dogg.image_url;
-        name = dogg.name;
-        age = dogg.age;
+    struct EventRec {
+        uint256 camp_id;        // 1
+        address addr_part;      // 2
+        address addr_spon;      // 3
+        uint256 date_event;     // 4
+        int8 unit;              // 5
+        int32 qty_unit;         // 6
+        uint256 wei_paid;       // 7
     }
+
+
+    function getCampaignsLen() view external returns(uint256){
+        return campaigns.length;
+    }
+
+
+    function getCampaign_rec( uint256 _campID ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        require( _campID <= campaigns.length );
+        Campaign memory cr = campaigns[_campID];
+        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+    }
+
+
+
+    // function setCampaign_rec( string _mfg, string _sn) external returns(uint256 _recNum){
+        //having problems with require ... getting rpc error
+        // require( msg.sender == storeOwner );
+        // require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
+        // uint256 recNum = nextRecNum++;
+        //next line returns a pointer to the location to write to
+        //it should automatically generate a new address based on the mapping
+
+        //try now with constructor
+        // bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
+        // return recNum;
+    // }   
+
+
+    function getSponsorsLen() view external returns(uint256){
+        return sponsors.length;
+    }
+
+    //this function will return how many sponsors for a campaign
+    function getNumSponsorsForCampaign( uint256 _campID ) public view returns( uint256 )  {
+        require( _campID <= campaigns.length );
+        uint256 numMatches = 0;
+        for(uint256 i=0; i<= sponsors.length; i++)
+        {
+            if (sponsors[i].camp_id == _campID )  numMatches++;
+        }  
+        return numMatches;        
+    }
+
+    function getSponsor_rec( uint256 _campID ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        require( _campID <= campaigns.length );
+        Campaign memory cr = campaigns[_campID];
+        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+    }
+    
+
+    function getParticipantsLen() view external returns(uint256){
+        return participants.length;
+    }
+
+
+    function getNumParticipantForCampaign( uint256 _campID ) public view returns( uint256 )  {
+        //this function will return how many participants for a campaign
+        require( _campID <= campaigns.length );
+        uint256 numMatches = 0;
+        for(uint256 i=0; i<=participants.length; i++)
+        {
+            if (participants[i].camp_id == _campID )  numMatches++;
+        }  
+        return numMatches;        
+    }
+
+
+    function getEventRecsLen() view external returns(uint256){
+        return eventrecs.length;
+    }
+
+
+    function getNumEventsForCampaign( uint256 _campID ) public view returns( uint256 )  {
+        //get number of matching event records for a campaign
+        require( _campID <= campaigns.length );
+        uint256 numMatches = 0;
+        for(uint256 i=0; i<= eventrecs.length; i++)
+        {
+            if ( eventrecs[i].camp_id == _campID )  numMatches++;
+        }  
+        return numMatches;        
+    }
+
+
 }
