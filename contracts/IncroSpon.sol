@@ -8,7 +8,7 @@ contract IncroSpon is Ownable{
     Campaign[] campaigns;
     Sponsor[] sponsors;
     Participant[] participants;
-    EventRec[] eventrecs;
+    EventLog[] eventlogs;
 
     struct Campaign {
         uint256 camp_id;        // 1
@@ -22,8 +22,8 @@ contract IncroSpon is Ownable{
     }
 
     struct Sponsor {
-        address addr_spon;      // 1
-        uint256 camp_id;        // 2
+        uint256 camp_id;        // 1
+        address addr_spon;      // 2
         address addr_part;      // 3
         address addr_pay_to;    // 4
         int8 unit;              // 5
@@ -32,8 +32,8 @@ contract IncroSpon is Ownable{
     }
 
     struct Participant {
-        address addr_part;      // 1
-        uint256 camp_id;        // 2
+        uint256 camp_id;        // 1
+        address addr_part;      // 2
         string name_part;       // 3
         int8 unit;              // 4
         int32 unit_goal;        // 5
@@ -41,7 +41,7 @@ contract IncroSpon is Ownable{
         uint256 date_end;       // 7
     }
 
-    struct EventRec {
+    struct EventLog {
         uint256 camp_id;        // 1
         address addr_part;      // 2
         address addr_spon;      // 3
@@ -97,26 +97,27 @@ contract IncroSpon is Ownable{
 
 
     function getSponsorInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
-    public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+    public view returns( address, address, address, int8, uint256, uint256 ) {
         //this will return a matching record for a sponsor, which is the _matchNum
         // can find out the number of matching items by running the getNum function
         require( _camp_id <= campaigns.length );
         uint256 numMatches = 0;
-        Campaign memory cr;
+        Sponsor memory sr;
+        //maybe make this a while loop so that can exit if no match
         for(uint256 i=0; i<= sponsors.length; i++)
         {
             if (sponsors[i].camp_id == _camp_id )  {
                 numMatches++;
                 if (numMatches == _matchNum) {
-                    cr = campaigns[_camp_id];
+                    sr = sponsors[_camp_id];
                     break;
                 }
             }
         }    
-        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+        return ( sr.addr_spon, sr.addr_part, sr.addr_pay_to, sr.unit, sr.wei_per_unit, sr.wei_in_escrow );
     }
     
-    
+
     function getParticipantsLen() view external returns(uint256){
         return participants.length;
     }
@@ -135,28 +136,28 @@ contract IncroSpon is Ownable{
 
 
     function getParticipantInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
-    public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+    public view returns(  address, string, int8, int32, uint256, uint256 ) {
         //this will return a matching record for a participant, which is the _matchNum
         // can find out the number of matching items by running the getNum function
         require( _camp_id <= campaigns.length );
         uint256 numMatches = 0;
-        Campaign memory cr;
+        Participant memory pr;
         for(uint256 i=0; i<= participants.length; i++)
         {
-            if (sponsors[i].camp_id == _camp_id )  {
+            if (participants[i].camp_id == _camp_id )  {
                 numMatches++;
                 if (numMatches == _matchNum) {
-                    cr = campaigns[_camp_id];
+                    pr = participants[_camp_id];
                     break;
                 }
             }
         }    
-        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+        return ( pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
     }
 
 
-    function getEventRecsLen() view external returns(uint256){
-        return eventrecs.length;
+    function getEventLogsLen() view external returns(uint256){
+        return eventlogs.length;
     }
 
 
@@ -164,11 +165,32 @@ contract IncroSpon is Ownable{
         //get number of matching event records for a campaign
         require( _campID <= campaigns.length );
         uint256 numMatches = 0;
-        for(uint256 i=0; i<= eventrecs.length; i++)
+        for(uint256 i=0; i<= eventlogs.length; i++)
         {
-            if ( eventrecs[i].camp_id == _campID )  numMatches++;
+            if ( eventlogs[i].camp_id == _campID )  numMatches++;
         }  
         return numMatches;        
+    }
+
+
+    function getEventInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
+    public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
+        //this will return a matching record for a participant, which is the _matchNum
+        // can find out the number of matching items by running the getNum function
+        require( _camp_id <= campaigns.length );
+        uint256 numMatches = 0;
+        EventLog memory er;
+        for(uint256 i=0; i<= participants.length; i++)
+        {
+            if (eventlogs[i].camp_id == _camp_id )  {
+                numMatches++;
+                if (numMatches == _matchNum) {
+                    er = eventlogs[_camp_id];
+                    break;
+                }
+            }
+        }    
+        return ( er.addr_part, er.addr_spon, er.date_event, er.unit, er.qty_unit, er.wei_paid );
     }
 
 
