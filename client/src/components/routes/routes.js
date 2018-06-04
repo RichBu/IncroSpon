@@ -1,18 +1,10 @@
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Main from './../main/';
-import SubME from './../sub_me/';
-import SubEE from './../sub_ee/';
-import SubEC from './../sub_ec/';
-import SubMA from './../sub_ma/';
-import SubSA from './../sub_sa/';
-import SubUN from './../sub_unity/';
-import SubPC from './../sub_pc/';
-import SubCNC from './../sub_cnc/';
-import SubFS from './../sub_fs/';
 import SubContact from './../sub_contact/';
 import SubAbout from './../sub_about/';
 import SubInfo from './../sub_info/';
+
 
 //import { Redirect } from "react-router-dom";
 //import { ReactRedirect } from "react-redirect";
@@ -47,33 +39,6 @@ const Routes = () => {
                             <Route exact path='/info' component={SubInfo} />
                         </Switch>
 
-                        <Switch>
-                            <Route exact path='/Sub-MechEng' component={SubME} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-ElectEng' component={SubEE} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-EngCalc' component={SubEC} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-MobApps' component={SubMA} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-SysArch' component={SubSA} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-Unity' component={SubUN} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-PC' component={SubPC} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-CNC' component={SubCNC} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path='/Sub-FullStack' component={SubFS} />
-                        </Switch>
                     </main>
                     <Footer />
                 </div>

@@ -27,8 +27,8 @@ const Header = () => {
                         <div style={{float: 'left'}}>
                             <BtnDropDown />
                         </div>
-                        <h2 className='bungeeFont'>Rich Budek</h2>
-                        <h3 className='italicHeader'>full stack web developer, degreed engineer, and integration specialist.</h3>
+                        <h2 className='bungeeFont'>IncroSpon</h2>
+                        <h3 className='italicHeader'>Incremental Sponsor</h3>
                     </div>
                 </div>
                 {/* <button className="btn btn-default btn-lg bttnHeader" onClick={sendButtonClick}>Test Email</button>                 */}

@@ -1,0 +1,138 @@
+
+
+
+
+  .subMenu_Contact_ContainerStyle {
+    backface-visibility: hidden;
+    background-size: cover;
+    background-position: center center;
+    color: transparent;
+    min-height: 100%;
+    /* height: 100%; */
+    /* opacity: 0.3; */
+    position: relative; 
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    min-width: 855px;
+    margin: 0px;
+    padding: 0px;
+    z-index: 1;
+    background: url('images/EE_print_01_full_back.jpg');
+    /* background: rgba(255,255,255,0.9);  */
+  }
+
+
+
+.textSub_Contact_Menu {
+    /* position: fixed; */
+    min-width: 855px;
+    /* width:100%; */
+    height:70px;
+    overflow:hidden;
+    /* opacity: 1.0; */
+    padding: 0px;
+    /* left:380px; */
+    top: 0px;
+    left: 0px;
+    color: white;
+    background-image: linear-gradient(180deg, rgb(149, 106, 20), rgb(149, 106, 20)    );
+    padding: 0px;
+    margin: 0px;
+    top: 0px;
+    z-index: 2;    
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+
+.text_Contact {
+    color:  rgb(149, 106, 20) ;
+    text-align: left;
+    padding: 0px 10px 0px 10px;
+    z-index: 10;
+}
+
+
+.line_Contact {
+    border-color: rgb(149, 106, 20);
+    background: rgb(149, 106, 20);
+    size: 2px;
+    height: 2px;
+}
+
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+  
+
+.centerDiv_ContactForm {
+    width: 50%;
+    margin: 0px auto;
+}
+
+
+
+.radio-contact [type="radio"]:checked+label:after {
+    border-color: #00C851;
+    background-color: #00C851;
+    padding: 0px;
+    margin: 0px 10px 0px 0px;
+}
+
+
+.radio-contact-inp {
+    padding: 0px;
+    margin: 0px 10px 0px 0px;
+}
+
+
+.bttn-contact {
+    margin: 0px 20px 0px 0px;
+    width: 180px;
+}
+
+
+.font_button_contact {
+    color:  #eee ;
+    height: 30px;
+    margin: 0px 10px 0px 0px;
+    font-size: 32px;
+}
+
+
+.font_button_contact2 {
+    color:  #eee ;
+    height: 30px;
+    margin: 0px 10px 0px 0px;
+    font-size: 32px;
+}
+
+
+.radio-green-gap [type="radio"].with-gap:checked+label:before {
+    border-color: #00C851;
+}
+
+
+.radio-green-gap [type="radio"]:checked+label:after {
+    border-color: #00C851;
+    background-color: #00C851;
+}            
+
+
+.text-error-contact {
+    color: red;
+}

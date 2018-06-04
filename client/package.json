@@ -5,8 +5,11 @@
   "dependencies": {
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-iframe": "^1.1.0",
+    "react-pdf": "^3.0.5",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
+    "react-tooltip": "^3.6.0",
     "truffle-contract": "^3.0.5",
     "web3": "^1.0.0-beta.34"
   },

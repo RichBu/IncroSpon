@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import IncroSponContract from './contracts/IncroSpon.json'
 import getWeb3 from './utils/getWeb3'
+import Routes from './components/routes/';
+
 
 import logo from './logo.svg';
 import './App.css';
@@ -123,32 +125,15 @@ class App extends Component {
   
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">IncroSpon</h1>
-        </header>
-        <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
-        </nav>
+      <div style={{ minWidth: '855px', minHeight: '860px', overflow: 'auto' }} className="App">
+      {/* <header className="App-header">
+      <h1 className="App-title">Rich Budek</h1>
+    </header> */}
+      <Routes />
+      <p className="App-intro">
+      </p>
+    </div>
 
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
-              <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
-            </div>
-          </div>
-        </main>
-      
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
     );
   }
 }
