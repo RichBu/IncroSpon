@@ -22,10 +22,10 @@ const btn_drop_down = () => {
                 <i className="fa fa-user font_style_button" aria-hidden="true"></i>
                 <span>  </span>About Me</Link></li>
                 <li role="separator" className="divider"></li>
-                <li><Link to='/sub-MechEng'>Campaigns</Link></li>
-                <li><Link to='/Sub-ElectEng'>Participant</Link></li>
-                <li><Link to='/Sub-EngCalc'>Sponsor</Link></li>
-                <li><Link to='/Sub-MobApps'>Dispersement</Link></li>
+                <li><Link to='/campaigns'>Campaigns</Link></li>
+                <li><Link to='/participants'>Participant</Link></li>
+                <li><Link to='/sponsors'>Sponsor</Link></li>
+                <li><Link to='/dispersement'>Dispersement</Link></li>
                 <li role="separator" className="divider"></li>
                 <li><a href="/info">
                 <i className="fa fa-info font_style_button" aria-hidden="true"></i>

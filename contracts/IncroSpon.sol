@@ -72,11 +72,20 @@ contract IncroSpon is Ownable{
 
 
     function getCampaign_rec( uint256 _camp_id ) public view returns(
-    string, address, int32, int32, uint256, uint256 
+    string, address, uint256, int32, int32, uint256, uint256 
     ) {
         // require(_camp_id < campaigns.length);
         Campaign memory cr = campaigns[_camp_id];
-        return ( cr.name, cr.started_by, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+    }
+
+
+    function getCampaignBal_rec( uint256 _camp_id ) public view returns(
+    string, address, uint256, int32, int32, uint256, uint256 
+    ) {
+        // require(_camp_id < campaigns.length);
+        Campaign memory cr = campaigns[_camp_id];
+        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
 
 

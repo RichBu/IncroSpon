@@ -4,6 +4,7 @@ import Main from './../main/';
 import SubContact from './../sub_contact/';
 import SubAbout from './../sub_about/';
 import SubInfo from './../sub_info/';
+import SubCampaign from './../sub_campaign/';
 
 
 //import { Redirect } from "react-router-dom";
@@ -37,6 +38,9 @@ const Routes = () => {
                         </Switch>
                         <Switch>
                             <Route exact path='/info' component={SubInfo} />
+                        </Switch>
+                        <Switch>
+                            <Route exact path='/campaigns' component={SubCampaign} />
                         </Switch>
 
                     </main>
