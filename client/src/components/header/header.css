@@ -1,0 +1,29 @@
+header {
+    color: white;
+    background-image: linear-gradient(180deg, #0ee046, rgb(14, 127, 61));
+    padding: 0px;
+    margin: 0px;
+    top: 0px;
+    z-index: 20;   
+    /* position: fixed;  */
+}
+
+.italicHeader {
+    font-style: italic;
+    line-height: 40px;
+}
+
+.bungeeFont {
+    line-height: 9px;
+}
+
+.containerHead {
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+    padding: 15px;
+    top: 0px;
+    z-index: 20;
+}
+
+
+

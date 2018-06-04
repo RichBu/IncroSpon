@@ -1,0 +1,771 @@
+
+.blankImage > figure {
+    backface-visibility: hidden;
+    background-image: url('images/blank_03.png');
+    /* background-size: cover; */
+    /* background-position: center center; */
+    color: transparent;
+    /* height: 100%; */
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    min-width: 50%;
+    min-height: 50%;
+    z-index: -10;
+  }
+
+
+.crossfade > figure {
+    animation: imageAnimation 30s linear infinite 0s;
+    backface-visibility: hidden;
+    background-size: cover;
+    background-position: center center;
+    color: transparent;
+    min-height: 850px;
+    min-width: 855px;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    z-index: -5;
+  }
+
+
+.crossfade > figure:nth-child(1) { 
+    animation-name: imageAnimation;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    opacity: 0.0;
+    background-image: url('images/ME_01_full.jpg');
+}
+
+.crossfade > figure:nth-child(2) {
+    animation-name: imageAnimation;
+    animation-delay: 6s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    opacity: 0.0;
+    background-image: url('images/EE_print_01_full.jpg');
+}
+
+.crossfade > figure:nth-child(3) {
+    animation-name: imageAnimation;
+    animation-delay: 12s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    opacity: 0.0;
+  background-image: url('images/EE_pcb_01_full.jpg');
+}
+
+.crossfade > figure:nth-child(4) {
+    animation-name: imageAnimation;
+    animation-delay: 18s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    opacity: 0.0;
+  background-image: url('images/EE_embed_01_full.jpg');
+}
+
+
+ 
+.crossfade > figure:nth-child(5) {
+    animation-name: imageAnimation;
+    animation-delay: 24s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    opacity: 0.0;
+  background-image: url('images/Calc_02_full.jpg');
+}
+
+.crossfade > figure:nth-child(6) {
+    animation-name: imageAnimation;
+    animation-delay: 30s;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    background-image: url('images/Mobile_app_01_full.jpg');
+  }
+
+  .crossfade > figure:nth-child(7) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 36s;
+    background-image: url('images/Soft_arch_01_full.jpg');
+  }
+
+  .crossfade > figure:nth-child(8) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 42s;
+    background-image: url('images/Soft_blockchain_01_full.jpg');
+  }
+ 
+  .crossfade > figure:nth-child(9) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 48s;
+    background-image: url('images/Soft_prog_01_full.jpg');
+  }
+ 
+  .crossfade > figure:nth-child(10) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 54s;
+    background-image: url('images/CNC_01_full.jpg');
+  }
+ 
+  .crossfade > figure:nth-child(11) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 60s;
+    background-image: url('images/EE_rack_01_full.jpg');
+  }
+ 
+  .crossfade > figure:nth-child(12) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 66s;
+    background-image: url('images/Panel_02_full.jpg');
+  }
+ 
+  .crossfade > figure:nth-child(13) {
+    animation-name: imageAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 72s;
+    animation-delay: 72s;
+    background-image: url('images/blank_03.png');
+  }
+ 
+      
+
+@keyframes 
+imageAnimation {  
+0% {
+    animation-timing-function: ease-in; 
+    opacity: 0.0;
+}
+1% {
+    animation-timing-function: ease-in; 
+    opacity: 1.0;
+    }
+9% {
+    animation-timing-function: ease-in; 
+    opacity: 1.0;
+    }
+10% {
+    opacity: 0.0;
+    }
+95% {
+    opacity: 0.0;
+}
+100% {
+    opacity: 0.0;
+}
+}
+
+
+.h3, h3 {
+    font-size: 24px;
+    margin: 0px;
+}
+
+/* html, body {
+    background : url(images/Calc_02_full.jpg) no-repeat center center fixed;
+    background-size: cover;
+} */
+
+.text1 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:380px;
+    top: 140px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text2 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:540px;
+    top: 225px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text3 {
+    position:absolute;
+    width:160px;
+    height:170px;
+    overflow:hidden;
+    left:595px;
+    top: 360px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text4 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:535px;
+    top: 555px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text5 {
+    position:absolute;
+    width:145px;
+    height:80px;
+    overflow:hidden;
+    left:375px;
+    top: 625px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text6 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:205px;
+    top: 560px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text7 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:150px;
+    top: 370px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text8 {
+    position:absolute;
+    width:150px;
+    height:80px;
+    overflow:hidden;
+    left:210px;
+    top: 210px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+
+.text20 {
+    position:absolute;
+    width:200px;
+    height:150px;
+    overflow:hidden;
+    left:360px;
+    top: 380px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    transform-origin:left center;
+    z-index: 10;
+    color: white;
+}
+.text10:BEFORE {
+    content:"";
+    position:absolute;
+    width:400px;
+    height:800px;
+    left:-400px;
+    border-radius:400px 0 0 400px;
+    -moz-transform-origin:right center;
+    -ms-transform-origin:right center;
+    -o-transform-origin:right center;
+    -webkit-transform-origin:right center;
+    transform-origin:right center;
+    
+}
+
+
+
+/* 
+  make each pie piece a rectangle twice as high as it is wide.
+  move the transform origin to the middle of the left side.
+  Also ensure that overflow is set to hidden.
+*/
+.pie {
+    position:absolute;
+    width:300px;
+    height:600px;
+    overflow:hidden;
+    left:450px;
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    z-index: 5;
+    transform-origin:left center;
+}
+.pie:BEFORE {
+    position:absolute;
+    content:"";
+    width:300px;
+    height:600px;
+    left:-300px;
+    border-radius:300px 0 0 300px;
+    -moz-transform-origin:right center;
+    -ms-transform-origin:right center;
+    -o-transform-origin:right center;
+    -webkit-transform-origin:right center;
+    transform-origin:right center;
+    
+}
+/* center circle */
+.circle {
+    position:absolute;
+    width:150px;
+    height:300px;
+    overflow:hidden;
+    left:450px;
+    top: 270px; 
+    -moz-transform-origin:left center;
+    -ms-transform-origin:left center;
+    -o-transform-origin:left center;
+    -webkit-transform-origin:left center;
+    z-index: 5;
+    transform-origin:left center;
+}
+/*  circle before */
+.circle:BEFORE {
+    content:"";
+    position:absolute;
+    width:150px;
+    height:300px;
+    left:-150px;
+    border-radius:150px 0 0 150px;
+    -moz-transform-origin:right center;
+    -ms-transform-origin:right center;
+    -o-transform-origin:right center;
+    -webkit-transform-origin:right center;
+    transform-origin:right center;   
+}
+
+
+/*
+unless the piece represents more than 50% of the whole chart.
+then make it a square, and ensure the transform origin is
+back in the center.
+
+NOTE: since this is only ever a single piece, you could
+move this to a piece specific rule and remove the extra class
+*/
+.pie.big {
+    width:200px;
+    height:200px;
+    left:50px;
+    -moz-transform-origin:center center;
+    -ms-transform-origin:center center;
+    -o-transform-origin:center center;
+    -webkit-transform-origin:center center;
+    transform-origin:center center;
+}
+/*
+this is the actual visible part of the pie. 
+Give it the same dimensions as the regular piece.
+Use border radius make it a half circle.
+move transform origin to the middle of the right side.
+Push it out to the left of the containing box.
+*/
+
+/* .pie:BEFORE {
+    content:"";
+    position:absolute;
+    width:400px;
+    height:800px;
+    left:-400px;
+    border-radius:400px 0 0 400px;
+    -moz-transform-origin:right center;
+    -ms-transform-origin:right center;
+    -o-transform-origin:right center;
+    -webkit-transform-origin:right center;
+    transform-origin:right center;
+    
+} */
+
+/* if it's part of a big piece, bring it back into the square */
+.pie.big:BEFORE {
+    left:0px;
+}
+/* 
+big pieces will also need a second semicircle, pointed in the
+opposite direction to hide the first part behind.
+*/
+.pie.big:AFTER {
+    content:"";
+    position:absolute;
+    width:100px;
+    height:200px;
+    left:100px;
+    border-radius:0 100px 100px 0;
+}
+/*
+add colour to each piece.
+*/
+.pie:nth-of-type(7):BEFORE,
+.pie:nth-of-type(7):AFTER {
+    background-color:#4BCAD3;	
+}
+.pie:nth-of-type(8):AFTER,
+.pie:nth-of-type(8):BEFORE {
+    background-color:#08A9E1;	
+}
+.pie:nth-of-type(9):AFTER,
+.pie:nth-of-type(9):BEFORE {
+    background-color:#004975;	
+}
+.pie:nth-of-type(2):AFTER,
+.pie:nth-of-type(2):BEFORE {
+    background-color: #830036;
+}
+.pie:nth-of-type(3):AFTER,
+.pie:nth-of-type(3):BEFORE {
+    background-color: #E3384C;	
+}
+.pie:nth-of-type(4):AFTER,
+.pie:nth-of-type(4):BEFORE {
+    background-color: #FF8429;	
+}
+.pie:nth-of-type(5):AFTER,
+.pie:nth-of-type(5):BEFORE {
+    background-color:#095E2A;	
+}
+.pie:nth-of-type(6):AFTER,
+.pie:nth-of-type(6):BEFORE {
+    background-color:#10A84B;	
+}
+/*
+now rotate each piece based on their cumulative starting
+position
+*/
+.circle:BEFORE,
+.circle:AFTER {
+    background-color:#13C758;	
+}
+
+.circle[data-start="0"] {
+    -moz-transform: rotate(0deg); /* Firefox */
+    -ms-transform: rotate(0deg); /* IE */
+    -webkit-transform: rotate(0deg); /* Safari and Chrome */
+    -o-transform: rotate(0deg); /* Opera */
+    transform:rotate(0deg);
+}
+.circle[data-start="180"] {
+    -moz-transform: rotate(180deg); /* Firefox */
+    -ms-transform: rotate(180deg); /* IE */
+    -webkit-transform: rotate(180deg); /* Safari and Chrome */
+    -o-transform: rotate(180deg); /* Opera */
+    transform:rotate(180deg);
+}
+.circle[data-value="180"]:BEFORE {
+    -moz-transform: rotate(180deg); /* Firefox */
+    -ms-transform: rotate(180deg); /* IE */
+    -webkit-transform: rotate(180deg); /* Safari and Chrome */
+    -o-transform: rotate(180deg); /* Opera */
+    transform:rotate(180deg);
+}
+
+
+.pie[data-start="-22"] {
+    -moz-transform: rotate(-23deg); /* Firefox */
+    -ms-transform: rotate(-23deg); /* IE */
+    -webkit-transform: rotate(-23deg); /* Safari and Chrome */
+    -o-transform: rotate(-23deg); /* Opera */
+    transform:rotate(-23deg);
+}
+.pie[data-start="23"] {
+    -moz-transform: rotate(23deg); /* Firefox */
+    -ms-transform: rotate(23deg); /* IE */
+    -webkit-transform: rotate(23deg); /* Safari and Chrome */
+    -o-transform: rotate(23deg); /* Opera */
+    transform:rotate(23deg);
+}
+.pie[data-start="68"] {
+    -moz-transform: rotate(68deg); /* Firefox */
+    -ms-transform: rotate(68deg); /* IE */
+    -webkit-transform: rotate(68deg); /* Safari and Chrome */
+    -o-transform: rotate(68deg); /* Opera */
+    transform:rotate(68deg);
+}
+.pie[data-start="113"] {
+    -moz-transform: rotate(113deg); /* Firefox */
+    -ms-transform: rotate(113deg); /* IE */
+    -webkit-transform: rotate(113deg); /* Safari and Chrome */
+    -o-transform: rotate(113deg); /* Opera */
+    transform:rotate(113deg);
+}
+.pie[data-start="158"] {
+    -moz-transform: rotate(158deg); /* Firefox */
+    -ms-transform: rotate(158deg); /* IE */
+    -webkit-transform: rotate(158deg); /* Safari and Chrome */
+    -o-transform: rotate(158deg); /* Opera */
+    transform:rotate(158deg);
+}
+.pie[data-start="203"] {
+    -moz-transform: rotate(203deg); /* Firefox */
+    -ms-transform: rotate(203deg); /* IE */
+    -webkit-transform: rotate(203deg); /* Safari and Chrome */
+    -o-transform: rotate(203deg); /* Opera */
+    transform:rotate(203deg);
+}
+.pie[data-start="248"] {
+    -moz-transform: rotate(248deg); /* Firefox */
+    -ms-transform: rotate(248deg); /* IE */
+    -webkit-transform: rotate(248deg); /* Safari and Chrome */
+    -o-transform: rotate(248deg); /* Opera */
+    transform:rotate(248deg);
+}
+.pie[data-start="293"] {
+    -moz-transform: rotate(293deg); /* Firefox */
+    -ms-transform: rotate(293deg); /* IE */
+    -webkit-transform: rotate(293deg); /* Safari and Chrome */
+    -o-transform: rotate(293deg); /* Opera */
+    transform:rotate(293deg);
+}
+
+
+
+
+
+
+.pie[data-start="45"] {
+    -moz-transform: rotate(45deg); /* Firefox */
+    -ms-transform: rotate(45deg); /* IE */
+    -webkit-transform: rotate(45deg); /* Safari and Chrome */
+    -o-transform: rotate(45deg); /* Opera */
+    transform:rotate(45deg);
+}
+.pie[data-start="90"] {
+    -moz-transform: rotate(90deg); /* Firefox */
+    -ms-transform: rotate(90deg); /* IE */
+    -webkit-transform: rotate(90deg); /* Safari and Chrome */
+    -o-transform: rotate(90deg); /* Opera */
+    transform:rotate(90deg);
+}
+.pie[data-start="135"] {
+    -moz-transform: rotate(135deg); /* Firefox */
+    -ms-transform: rotate(135deg); /* IE */
+    -webkit-transform: rotate(135deg); /* Safari and Chrome */
+    -o-transform: rotate(135deg); /* Opera */
+    transform:rotate(135deg);
+}
+.pie[data-start="180"] {
+    -moz-transform: rotate(180deg); /* Firefox */
+    -ms-transform: rotate(180deg); /* IE */
+    -webkit-transform: rotate(180deg); /* Safari and Chrome */
+    -o-transform: rotate(180deg); /* Opera */
+    transform:rotate(180deg);
+}
+.pie[data-start="225"] {
+    -moz-transform: rotate(225deg); /* Firefox */
+    -ms-transform: rotate(225deg); /* IE */
+    -webkit-transform: rotate(225deg); /* Safari and Chrome */
+    -o-transform: rotate(225deg); /* Opera */
+    transform:rotate(225deg);
+}
+.pie[data-start="270"] {
+    -moz-transform: rotate(270deg); /* Firefox */
+    -ms-transform: rotate(270deg); /* IE */
+    -webkit-transform: rotate(270deg); /* Safari and Chrome */
+    -o-transform: rotate(270deg); /* Opera */
+    transform:rotate(270deg);
+}
+.pie[data-start="315"] {
+    -moz-transform: rotate(315deg); /* Firefox */
+    -ms-transform: rotate(315deg); /* IE */
+    -webkit-transform: rotate(315deg); /* Safari and Chrome */
+    -o-transform: rotate(315deg); /* Opera */
+    transform:rotate(315deg);
+}
+
+.pie[data-start="30"] {
+    -moz-transform: rotate(30deg); /* Firefox */
+    -ms-transform: rotate(30deg); /* IE */
+    -webkit-transform: rotate(30deg); /* Safari and Chrome */
+    -o-transform: rotate(30deg); /* Opera */
+    transform:rotate(30deg);
+}
+.pie[data-start="60"] {
+    -moz-transform: rotate(60deg); /* Firefox */
+    -ms-transform: rotate(60deg); /* IE */
+    -webkit-transform: rotate(60deg); /* Safari and Chrome */
+    -o-transform: rotate(60deg); /* Opera */
+    transform:rotate(60deg);
+}
+.pie[data-start="100"] {
+    -moz-transform: rotate(100deg); /* Firefox */
+    -ms-transform: rotate(100deg); /* IE */
+    -webkit-transform: rotate(100deg); /* Safari and Chrome */
+    -o-transform: rotate(100deg); /* Opera */
+    transform:rotate(100deg);
+}
+/*
+and rotate the amount of the pie that's showing.
+
+NOTE: add an extra degree to all but the final piece, 
+to fill in unsightly gaps.
+*/
+.pie[data-value="45"]:BEFORE {
+    -moz-transform: rotate(46deg); /* Firefox */
+    -ms-transform: rotate(46deg); /* IE */
+    -webkit-transform: rotate(46deg); /* Safari and Chrome */
+    -o-transform: rotate(46deg); /* Opera */
+    transform:rotate(46deg);
+}
+.pie[data-value="90"]:BEFORE {
+    -moz-transform: rotate(91deg); /* Firefox */
+    -ms-transform: rotate(91deg); /* IE */
+    -webkit-transform: rotate(91deg); /* Safari and Chrome */
+    -o-transform: rotate(91deg); /* Opera */
+    transform:rotate(91deg);
+}
+.pie[data-value="135"]:BEFORE {
+    -moz-transform: rotate(136deg); /* Firefox */
+    -ms-transform: rotate(136deg); /* IE */
+    -webkit-transform: rotate(136deg); /* Safari and Chrome */
+    -o-transform: rotate(136deg); /* Opera */
+    transform:rotate(136deg);
+}
+.pie[data-value="30"]:BEFORE {
+    -moz-transform: rotate(31deg); /* Firefox */
+    -ms-transform: rotate(31deg); /* IE */
+    -webkit-transform: rotate(31deg); /* Safari and Chrome */
+    -o-transform: rotate(31deg); /* Opera */
+    transform:rotate(31deg);
+}
+.pie[data-value="40"]:BEFORE {
+    -moz-transform: rotate(41deg); /* Firefox */
+    -ms-transform: rotate(41deg); /* IE */
+    -webkit-transform: rotate(41deg); /* Safari and Chrome */
+    -o-transform: rotate(41deg); /* Opera */
+    transform:rotate(41deg);
+}
+.pie[data-value="225"]:BEFORE {
+    -moz-transform: rotate(225deg); /* Firefox */
+    -ms-transform: rotate(225deg); /* IE */
+    -webkit-transform: rotate(225deg); /* Safari and Chrome */
+    -o-transform: rotate(225deg); /* Opera */
+    transform:rotate(225deg);
+}
+
+.subMenuHead {
+    /* overflow: auto; */
+    min-width: 100%;
+    padding: 0px;
+}
+
+
+.subMenuSpacer {
+    position: relative;
+    height: 225px;
+}
+
+
+.subMenu_proj_div {
+    /* overflow: auto; */
+    min-width: 100%;
+    /* height: 40%; */
+    padding: 0px;
+    z-index: 10;
+    /* overflow: scroll; */
+}
+
+
+.row-hover:hover {
+    background: rgb(218, 255, 8);
+}
+
+
+@media screen and (min-width: 260px) {
+    .subMenuSpacer {
+      height: 200px;
+    }
+  }
+
+
+@media screen and (min-width: 340px) {
+    .subMenuSpacer {
+      height: 150px;
+    }
+  }
+
+
+@media screen and (min-width: 445px) {
+    .subMenuSpacer {
+      height: 120px;
+    }
+  }
+
+@media screen and (min-width: 828px) {
+    .subMenuSpacer {
+      height: 80px;
+    }
+  }

@@ -4,6 +4,7 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract IncroSpon is Ownable{ 
     //string public name = 'Incro-Sponsor';
+    uint storedData;
 
     Campaign[] public campaigns;
     Sponsor[] public sponsors;
@@ -52,31 +53,31 @@ contract IncroSpon is Ownable{
     }
 
 
+    function testSet(uint x) public {
+        storedData = x;
+        // campaigns.push(Campaign(0,"testSet push", 0, 0, 0, 0, 0, 0));
+   }
+
+    function testGet() public view returns (uint) {
+        return storedData;
+    }
+
+    function testPay() public payable {
+        storedData = storedData;
+    }
+
     function getCampaignsLen() view external returns(uint256){
         return campaigns.length;
     }
 
 
-    function getCampaign_rec( uint256 _camp_id ) public view returns( string, address, uint256, int32, int32, uint256, uint256 ) {
-        require(_camp_id <= campaigns.length);
+    function getCampaign_rec( uint256 _camp_id ) public view returns(
+    string, address, int32, int32, uint256, uint256 
+    ) {
+        // require(_camp_id < campaigns.length);
         Campaign memory cr = campaigns[_camp_id];
-        return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
+        return ( cr.name, cr.started_by, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
-
-
-
-    // function setCampaign_rec( string _mfg, string _sn) external returns(uint256 _recNum){
-        //having problems with require ... getting rpc error
-        // require( msg.sender == storeOwner );
-        // require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
-        // uint256 recNum = nextRecNum++;
-        //next line returns a pointer to the location to write to
-        //it should automatically generate a new address based on the mapping
-
-        //try now with constructor
-        // bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
-        // return recNum;
-    // }   
 
 
     function getSponsorsLen() view external returns(uint256){
@@ -231,10 +232,22 @@ contract IncroSpon is Ownable{
     //functions to write to the contract
     function setCampaign_rec(string _name, address _started_by, uint256 _end_date) external returns (uint256) {
         uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;
         int32 _unit_goal = 0;
         int32 _unit_so_far = 0;     
         uint256 _wei_paid_out = 0; 
         uint256 _wei_in_escrow = 0;
+
+        //push did not work, maybe try mapping next time
+        // campaigns[_camp_id].camp_id = _camp_id;
+        // campaigns[_camp_id].name = _name;
+        // campaigns[_camp_id].started_by = _started_by;
+        // campaigns[_camp_id].end_date = _end_date;
+        // campaigns[_camp_id].unit_goal = _unit_goal;
+        // campaigns[_camp_id].unit_so_far = _unit_so_far;
+        // campaigns[_camp_id].wei_paid_out = _wei_paid_out;
+        // campaigns[_camp_id].wei_in_escrow = _wei_in_escrow;
+        
         campaigns.push(Campaign(_camp_id, _name, _started_by, _end_date, _unit_goal, _unit_so_far, _wei_paid_out, _wei_in_escrow));
     }
 }
