@@ -114,7 +114,7 @@ contract IncroSpon is Ownable{
         uint256 numMatches = 0;
         Sponsor memory sr;
         //maybe make this a while loop so that can exit if no match
-        for(uint256 i = 0; i <= sponsors.length; i++)
+        for(uint256 i = 0; i < sponsors.length; i++)
         {
             if (sponsors[i].camp_id == _camp_id )  {
                 numMatches++;
@@ -148,31 +148,25 @@ contract IncroSpon is Ownable{
     function getParticipantInCampaign_rec( uint256 _camp_id, uint256 _matchNum 
         ) 
     view external returns(  
-        uint256, address, string, int8, int32, uint256, uint256 
-        // string
-        ){
+        uint256, address, string, int8, int32, uint256, uint256 ) {
         //this will return a matching record for a participant, which is the _matchNum
         //can find out the number of matching items by running the getNum function
         // require(_camp_id <= campaigns.length);
         uint256 numMatches = 0;
         Participant memory pr;
-        // for(uint256 i = 0; i <= participants.length; i++)
-        // {
-        //     if (participants[i].camp_id == _camp_id )  {
-        //         if (numMatches == _matchNum) {
-        //             pr = participants[i];
-        //             //i = participants.length + 1;
-        //         }
-        //         numMatches++;
-        //     }
-        // }    
+        for(uint256 i = 0; i < participants.length; i++)
+        {
+            if (participants[i].camp_id == _camp_id) 
+            {
+                if (numMatches == _matchNum) {
+                    pr = participants[i];
+                    //i = participants.length + 1;
+                }
+                numMatches++;
+            }
+        }    
 
-        // Participant memory pr;
-        pr = participants[0];
         return ( pr.camp_id, pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
-
-        // string memory strOut = "test1";
-        // return ( strOut );
     }
 
 
@@ -182,7 +176,7 @@ contract IncroSpon is Ownable{
         //for a given the participant who has called this, find out
         //how many campaigns he is in
         uint256 numMatches = 0;
-        for(uint256 i = 0; i<=participants.length; i++)
+        for(uint256 i = 0; i < participants.length; i++)
         {
             if (participants[i].addr_part == _addr_part )  numMatches++;
         }  
@@ -196,7 +190,7 @@ contract IncroSpon is Ownable{
         // can find out the number of matching items by running the getNum function
         uint256 numMatches = 0;
         Participant memory pr;
-        for(uint256 i = 0; i <= participants.length; i++)
+        for(uint256 i = 0; i < participants.length; i++)
         {
             if (participants[i].addr_part == _addr_part )  {
                 numMatches++;
@@ -219,7 +213,7 @@ contract IncroSpon is Ownable{
         //get number of matching event records for a campaign
         require(_campID <= campaigns.length);
         uint256 numMatches = 0;
-        for(uint256 i = 0; i <= eventpaylogs.length; i++)
+        for(uint256 i = 0; i < eventpaylogs.length; i++)
         {
             if ( eventpaylogs[i].camp_id == _campID )  numMatches++;
         }  
@@ -234,7 +228,7 @@ contract IncroSpon is Ownable{
         require(_camp_id <= campaigns.length);
         uint256 numMatches = 0;
         EventPayLog memory er;
-        for(uint256 i = 0; i <= participants.length; i++)
+        for(uint256 i = 0; i < participants.length; i++)
         {
             if (eventpaylogs[i].camp_id == _camp_id )  {
                 numMatches++;
@@ -256,16 +250,6 @@ contract IncroSpon is Ownable{
         int32 _unit_so_far = 0;     
         uint256 _wei_paid_out = 0; 
         uint256 _wei_in_escrow = 0;
-
-        //push did not work, maybe try mapping next time
-        // campaigns[_camp_id].camp_id = _camp_id;
-        // campaigns[_camp_id].name = _name;
-        // campaigns[_camp_id].started_by = _started_by;
-        // campaigns[_camp_id].end_date = _end_date;
-        // campaigns[_camp_id].unit_goal = _unit_goal;
-        // campaigns[_camp_id].unit_so_far = _unit_so_far;
-        // campaigns[_camp_id].wei_paid_out = _wei_paid_out;
-        // campaigns[_camp_id].wei_in_escrow = _wei_in_escrow;
         
         campaigns.push(Campaign(_camp_id, _name, _started_by, _end_date, _unit_goal, _unit_so_far, _wei_paid_out, _wei_in_escrow));
     }

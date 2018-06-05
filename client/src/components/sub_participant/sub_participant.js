@@ -60,15 +60,15 @@ class SubParticipant extends React.Component {
             ], //campaignList
 
             partList: [
-                {
-                camp_id: 0, 
-                addr_part: 0,
-                name_part: "",
-                unit: 0,
-                unit_goal: 0,
-                date_start: 0,
-                date_end: 0
-                }        
+                // {
+                // camp_id: 0, 
+                // addr_part: 0,
+                // name_part: "",
+                // unit: 0,
+                // unit_goal: 0,
+                // date_start: 0,
+                // date_end: 0
+                // }        
             ]
         };
         this.pathProd = 'https://portfolio-richbu.herokuapp.com';
@@ -204,47 +204,49 @@ class SubParticipant extends React.Component {
 
     loadPartToState(_camp_id) {
         //this function pulls out all of the participants for a campaign
+        let numPart;
         // this.state.web3.eth.getAccounts((error, _accounts) => {
         //     //used this to start the string of promises
         //     console.log(`error = ${error}`);
         //     console.log(`accounts = ${_accounts}`);
             // Promise.all([incroSponContractInstance.getParticipantsLen()])
             console.log('before getting record');
-            Promise.all([ incroSponContractInstance.getParticipantInCampaign_rec.call(0,0)  ])
+            Promise.all([ incroSponContractInstance.getParticipantsLen.call()  ])
         .then((result2) => {
             console.log(`participants length=${result2}`);
             console.log(result2);
-            return incroSponContractInstance.getNumParticipantForCampaign(this.state.form_sel_camp_id);
+            return incroSponContractInstance.getNumParticipantForCampaign(_camp_id);
         }).then((result) => {
-            console.log('num of participants for camp = ');
-            console.log(result);
-            let numPart = parseInt(result.c[0]);
+            // console.log('num of participants for camp = ');
+            // console.log(result);
+            numPart = parseInt(result.c[0]);
             console.log(`num of part for this campaign = ${numPart}`);
             let promises = [];
-            return incroSponContractInstance.getParticipantInCampaign_rec.call( 0,0 );
-            // for (var i = 0; i < numPart; i++) {
-            //     promises.push( incroSponContractInstance.getParticipantInCampaign_rec( this.state.form_sel_camp_id, i ) );
-            // };
-            // return Promise.all(promises);        
+            // return incroSponContractInstance.getParticipantInCampaign_rec.call( 0,0 );
+            for (var i = 0; i < numPart; i++) {
+                promises.push( incroSponContractInstance.getParticipantInCampaign_rec( _camp_id, i ) );
+            };
+            return Promise.all(promises);        
         }).then((data_rec) => {
+            console.log('data records ****');
+            console.log(data_rec);
             console.log(`data rec len = ${data_rec.length}`);
             let partArray = [];
             for (var i = 0; i < data_rec.length; i++) {
-                let tempVal = parseInt(data_rec[i][3]);
-                console.log(tempVal);
                 partArray.push(
                     {
-                        camp_id: this.state.form_sel_camp_id, 
-                        addr_part: data_rec[i][0],
-                        name_part: data_rec[i][1],
-                        unit: data_rec[i][2],
-                        unit_goal: data_rec[i][3],
-                        date_start: data_rec[i][4],
-                        date_end: data_rec[i][5]
+                        camp_id: parseInt(data_rec[i][0]), 
+                        addr_part: data_rec[i][1],
+                        name_part: data_rec[i][2],
+                        unit: parseInt(data_rec[i][3]),
+                        unit_goal: parseInt(data_rec[i][4]),
+                        date_start: parseInt(data_rec[i][5]),
+                        date_end: parseInt(data_rec[i][6])
                     }
                 );
-                console.log(data_rec[i]);
             };
+            console.log('*** part array ***');
+            console.log(partArray);
             this.setState({
                 partList: partArray
             }, () => console.log(this.state.partList));            
@@ -377,6 +379,35 @@ class SubParticipant extends React.Component {
                                     <hr className='line_Campaign' />
                                 </div>
                             )}
+                            <hr className='line_Campaign' />
+                            <h4 className='text_Campaign'>Matching Participants</h4>
+                            <hr className='line_Campaign' />
+                            {this.state.partList.map((b) =>
+                                <div className='row' >
+                                    <div key={b.addr_part} style={{ textAlign: 'left' }} >
+                                        <br />
+                                        <br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>campaign id:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.camp_id}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>participant name:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.name_part}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>address of part:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.addr_part}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>units</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.unit}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>unit goal:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.unit_goal}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>date start:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.date_start}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>date_end:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.date_end}</h4><br />
+                                        <br />
+                                    </div>
+                                    <br />
+                                    <hr className='line_Campaign' />
+                                </div>
+                            )}
+                            
                         </div>
                         <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <br />
