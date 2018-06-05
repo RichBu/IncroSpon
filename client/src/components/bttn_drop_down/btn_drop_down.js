@@ -23,7 +23,7 @@ const btn_drop_down = () => {
                 <span>  </span>About Me</Link></li>
                 <li role="separator" className="divider"></li>
                 <li><Link to='/campaigns'>Campaigns</Link></li>
-                <li><Link to='/participants'>Participant</Link></li>
+                <li><Link to='/participant'>Participant</Link></li>
                 <li><Link to='/sponsors'>Sponsor</Link></li>
                 <li><Link to='/dispersement'>Dispersement</Link></li>
                 <li role="separator" className="divider"></li>

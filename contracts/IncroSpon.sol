@@ -133,11 +133,11 @@ contract IncroSpon is Ownable{
     }
 
 
-    function getNumParticipantForCampaign( uint256 _camp_id ) public view returns( uint256 )  {
+    function getNumParticipantForCampaign( uint256 _camp_id ) view external returns( uint256 )  {
         //this function will return how many participants for a campaign
         require(_camp_id <= campaigns.length);
         uint256 numMatches = 0;
-        for(uint256 i = 0; i<=participants.length; i++)
+        for(uint256 i = 0; i < participants.length; i++)
         {
             if (participants[i].camp_id == _camp_id )  numMatches++;
         }  
@@ -145,24 +145,34 @@ contract IncroSpon is Ownable{
     }
 
 
-    function getParticipantInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
-    public view returns(  address, string, int8, int32, uint256, uint256 ) {
+    function getParticipantInCampaign_rec( uint256 _camp_id, uint256 _matchNum 
+        ) 
+    view external returns(  
+        uint256, address, string, int8, int32, uint256, uint256 
+        // string
+        ){
         //this will return a matching record for a participant, which is the _matchNum
-        // can find out the number of matching items by running the getNum function
-        require(_camp_id <= campaigns.length);
+        //can find out the number of matching items by running the getNum function
+        // require(_camp_id <= campaigns.length);
         uint256 numMatches = 0;
         Participant memory pr;
-        for(uint256 i = 0; i <= participants.length; i++)
-        {
-            if (participants[i].camp_id == _camp_id )  {
-                numMatches++;
-                if (numMatches == _matchNum) {
-                    pr = participants[_camp_id];
-                    break;
-                }
-            }
-        }    
-        return ( pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
+        // for(uint256 i = 0; i <= participants.length; i++)
+        // {
+        //     if (participants[i].camp_id == _camp_id )  {
+        //         if (numMatches == _matchNum) {
+        //             pr = participants[i];
+        //             //i = participants.length + 1;
+        //         }
+        //         numMatches++;
+        //     }
+        // }    
+
+        // Participant memory pr;
+        pr = participants[0];
+        return ( pr.camp_id, pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
+
+        // string memory strOut = "test1";
+        // return ( strOut );
     }
 
 
@@ -259,6 +269,17 @@ contract IncroSpon is Ownable{
         
         campaigns.push(Campaign(_camp_id, _name, _started_by, _end_date, _unit_goal, _unit_so_far, _wei_paid_out, _wei_in_escrow));
     }
+
+
+    //functions to write to the contract
+    function setPart_rec(uint256 _camp_id,address _addr_part,string _name_part,int8 _unit,
+    int32 _unit_goal, uint256 _date_start, uint256 _date_end ) external returns (uint256) {
+        //uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;
+        
+        participants.push(Participant(_camp_id, _addr_part, _name_part, _unit, _unit_goal,_date_start, _date_end));
+    }
+
 }
 
 
