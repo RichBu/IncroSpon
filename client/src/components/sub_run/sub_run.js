@@ -17,6 +17,22 @@ class SubRun extends React.Component {
             ethConv: 582.53,
             xCoord: 0,
             yCoord: 0,
+            event_start_loc: 0,
+            event_start_addr: '',
+            event_stop_loc: 0,
+            event_stop_addr: '',
+            event_dist: '',
+
+            event_wei_per_unit: null,
+            event_wei_per_unit_str: null,
+            event_eth_per_unit: null,
+            event_usd_per_unit: null,
+            event_tot_wei: null,
+            event_tot_wei_str: null,
+            event_tot_eth_: null,
+            event_tot_usd: null,
+            event_qty_units: 0,
+
             form_sel_camp_id: '',
             form_sel_name: '',
             form_sel_started_by: '',
@@ -85,21 +101,47 @@ class SubRun extends React.Component {
             ], //campaignList
 
             partList: [
-                // {
-                // camp_id: 0, 
-                // addr_part: 0,
-                // name_part: "",
-                // unit: 0,
-                // unit_goal: 0,
-                // date_start: 0,
-                // date_end: 0
-                // }        
+                {
+                camp_id: 0, 
+                addr_part: 0,
+                name_part: "",
+                unit: 0,
+                unit_goal: 0,
+                date_start: 0,
+                date_end: 0
+                }        
+            ],
+
+            eventList: [
+                {
+                camp_id: 0,
+                addr_part: 0,
+                addr_spon: 0,
+                date_event: 0,
+                unit: 0,
+                qty_unit: 0,
+                wei_paid: 0
+                }
+            ],
+
+            sponsorList: [
+                {
+                camp_id: 0,
+                addr_spon: 0,
+                addr_part: 0,
+                addr_pay_to: 0,
+                unit: 0,
+                wei_per_unit: 0,
+                wei_in_escrow: 0
+                }
             ]
         };
         this.pathProd = 'https://portfolio-richbu.herokuapp.com';
         this.pathDev = 'http://localhost:3006';
         this.useProd = true;
-        this.donateButtonClick = this.donateButtonClick.bind(this);
+        this.startEvtButtonClick = this.startEvtButtonClick.bind(this);
+        this.stopEvtButtonClick = this.stopEvtButtonClick.bind(this);
+        this.calcEvtButtonClick = this.calcEvtButtonClick.bind(this);
     }
 
 
@@ -324,28 +366,136 @@ class SubRun extends React.Component {
             console.log(`data rec len = ${data_rec.length}`);
             let partArray = [];
             for (var i = 0; i < data_rec.length; i++) {
-                partArray.push(
-                    {
-                        camp_id: parseInt(data_rec[i][0]), 
-                        addr_part: data_rec[i][1],
-                        name_part: data_rec[i][2],
-                        unit: parseInt(data_rec[i][3]),
-                        unit_goal: parseInt(data_rec[i][4]),
-                        date_start: parseInt(data_rec[i][5]),
-                        date_end: parseInt(data_rec[i][6])
-                    }
-                );
+                let tempStr1 = this.state.form_addr_part.toLowerCase();
+                let tempStr2a = data_rec[i][1];
+                let tempStr2b = tempStr2a.toLowerCase();
+
+                if ( tempStr1==tempStr2b )  {
+                    partArray.push(
+                        {
+                            camp_id: parseInt(data_rec[i][0]), 
+                            addr_part: data_rec[i][1],
+                            name_part: data_rec[i][2],
+                            unit: parseInt(data_rec[i][3]),
+                            unit_goal: parseInt(data_rec[i][4]),
+                            date_start: parseInt(data_rec[i][5]),
+                            date_end: parseInt(data_rec[i][6])
+                        }
+                    );    
+                }
             };
             console.log('*** part array ***');
             console.log(partArray);
             this.setState({
                 partList: partArray
             }, () => console.log(this.state.partList));            
-        })
+        }).then((result) => {
+            //all of the participant records have been read in, now
+            //read in the event logs
+            return incroSponContractInstance.getNumEventPayLogsForCampaign(_camp_id);
+        }).then((result) => {
+            //number of events
+            let numEventLogs = parseInt(result.c[0]);
+            console.log(`num of events for this campaign = ${numEventLogs}`);
+            let promises = [];
+            // return incroSponContractInstance.getParticipantInCampaign_rec.call( 0,0 );
+            for (var i = 0; i < numEventLogs; i++) {
+                promises.push( incroSponContractInstance.getEventPayLogsInCampaign_rec( _camp_id, i ) );
+            };
+            return Promise.all(promises);        
+        }).then((data_rec) => {
+            console.log('event pay logs ****');
+            console.log(data_rec);
+            console.log(`event pay log len = ${data_rec.length}`);
+            let eventLogArray = [];
+            for (var i = 0; i < data_rec.length; i++) {
+                let tempStr1 = this.state.form_addr_part.toLowerCase();
+                let tempStr2a = data_rec[i][1];
+                let tempStr2b = tempStr2a.toLowerCase();
 
+                if ( tempStr1==tempStr2b )  {
+                    eventLogArray.push(
+                        {
+                            camp_id: parseInt(data_rec[i][0]), 
+                            addr_part: data_rec[i][1],
+                            addr_spon: data_rec[i][2],
+                            date_event: parseInt(data_rec[i][3]),
+                            unit: parseInt(data_rec[i][4]),
+                            qty_unit: parseInt(data_rec[i][5]),
+                            wei_paid: data_rec[i][6],
+                        }
+                    );    
+                }
+            };
+            console.log('*** event log ***');
+            console.log(eventLogArray);
+            this.setState({
+                eventList: eventLogArray
+            }, () => console.log(this.state.eventList));                    
+        }).then((result) => {
+            //all of the participant records have been read in, now
+            //read in all the sponsors
+            console.log('hit number of sponsors');
+            console.log(`incoming camp id = ${_camp_id}`);
+            return incroSponContractInstance.getNumSponsorsForCampaign(_camp_id);
+        }).then((result) => {
+            //number of sponsors
+            let numSponsors = parseInt(result.c[0]);
+            console.log(`num of sponsors for this campaign = ${numSponsors}`);
+            let promises = [];
+            // return incroSponContractInstance.getParticipantInCampaign_rec.call( 0,0 );
+            for (var i = 0; i < numSponsors; i++) {
+                promises.push( incroSponContractInstance.getSponsorInCampaign_rec( _camp_id, i ) );
+            };
+            return Promise.all(promises);        
+        }).then((data_rec) => {
+            console.log('sponsors list ****');
+            console.log(data_rec);
+            console.log(`sponsors list len = ${data_rec.length}`);
+            let sponsorArray = [];
+            for (var i = 0; i < data_rec.length; i++) {
+                let tempStr1 = this.state.form_addr_part.toLowerCase();
+                let tempStr2a = data_rec[i][1];
+                let tempStr2b = tempStr2a.toLowerCase();
+
+                if ( tempStr1==tempStr2b )  {
+                    let wei_per_unit_BN = new this.state.web3.utils.toBN(data_rec[i][4]);
+                    let _wei_per_unit_eth = this.state.web3.utils.fromWei(wei_per_unit_BN);
+                    let _wei_per_unit_usd = parseFloat(_wei_per_unit_eth) * this.state.ethConv;
+                    let _wei_per_unit_str = wei_per_unit_BN.toString();
+                    let wei_in_escrow_BN = new this.state.web3.utils.toBN(data_rec[i][5]);
+                    let _wei_in_escrow_eth = this.state.web3.utils.fromWei(wei_in_escrow_BN);
+                    let _wei_in_escrow_usd = parseFloat(_wei_in_escrow_eth) * this.state.ethConv;
+                    let _wei_in_escrow_str = wei_in_escrow_BN.toString();
+                    sponsorArray.push(
+                        {
+                            camp_id: _camp_id,
+                            addr_spon: data_rec[i][0],
+                            addr_part: data_rec[i][1],
+                            addr_pay_to: data_rec[i][2],
+                            unit: parseInt(data_rec[i][3]),
+                            wei_per_unit: data_rec[i][4],
+                            wei_per_unit_str: _wei_per_unit_str,
+                            wei_per_unit_usd: _wei_per_unit_usd,
+                            wei_in_escrow: data_rec[i][5],
+                            wei_in_escrow_str: _wei_in_escrow_str,
+                            wei_in_escrow_usd: _wei_in_escrow_usd
+                        }
+                    );    
+                }
+            };
+            console.log('*** sponsors ***');
+            console.log(sponsorArray);
+            this.setState({
+                sponsorList: sponsorArray
+            }, () => console.log(this.state.sponsorList));                    
+        })
     }    
 
 
+    event_distChange(event) {
+        this.setState({event_dist: event.target.value});
+    }
 
     addr_sponChange(event) {
         this.setState({formSpon_addr_spon: event.target.value});
@@ -417,6 +567,66 @@ class SubRun extends React.Component {
     }
 
 
+    calcEvtButtonClick = (event) => {
+        let _qty_units = this.state.event_dist;
+        let _tot_usd = _qty_units * this.state.event_usd_per_unit;
+        let _tot_eth = _tot_usd / this.state.ethConv;
+        let _tot_eth_str = _tot_eth.toString();
+        let _tot_wei = this.state.web3.utils.toWei(_tot_eth_str);
+        let _tot_wei_str = _tot_wei.toString();
+
+        this.setState({
+            event_qty_units: _qty_units,
+            event_tot_usd: _tot_usd,
+            event_tot_eth: _tot_eth,
+            event_tot_wei: _tot_wei,
+            event_tot_wei_str: _tot_wei_str
+        })        
+    }
+
+
+    stopEvtButtonClick = (event) => {
+        this.calcEvtButtonClick();
+    }
+
+
+    startEvtButtonClick = (event) => {
+        event.preventDefault();
+        this.setState({
+            event_start_addr: '467 W. 2nd Street, Elmhurst IL 60126',
+            event_stop_addr: '467 W. 2nd Street, Elmhurst IL 60126',
+            event_dist: 0,
+        });
+        //now update all of the units
+        //using only the first sponsor, will have to loop thru all sponsors
+
+        let wei_per_unit_BN = new this.state.web3.utils.toBN(this.state.sponsorList[0].wei_per_unit);
+        let _eth_per_unit = this.state.web3.utils.fromWei(wei_per_unit_BN);
+        let _usd_per_unit = parseFloat(_eth_per_unit) * this.state.ethConv;
+        let _wei_per_unit_str = wei_per_unit_BN.toString();
+
+        let _tot_usd = this.state.event_qty_units * this.state.event_usd_per_unit;
+        let _tot_eth = _tot_usd / this.state.ethConv;
+        let _tot_eth_str = _tot_eth.toString();
+        let _tot_wei = this.state.web3.utils.toWei(_tot_eth_str);
+        let _tot_wei_str = _tot_wei.toString();
+
+        this.setState({
+            event_wei_per_unit: wei_per_unit_BN,
+            event_wei_per_unit_str: _wei_per_unit_str,
+            event_eth_per_unit: _eth_per_unit,
+            event_usd_per_unit: _usd_per_unit,
+
+            event_qty_units: 0,
+            event_tot_usd: null,
+            event_tot_eth: null,
+            event_tot_wei: null,
+            event_tot_wei_str: null
+        })
+    
+    }
+    
+
     donateButtonClick = (event) => {
         event.preventDefault();
         console.log('button pressed = donate button');
@@ -486,7 +696,7 @@ class SubRun extends React.Component {
                     <hr className='line_Campaign' />
                     <div className='row'>
                         <div className='col-md-3'>
-                            <h4 className='text_Campaign'><strong>Sponsoring:</strong></h4>
+                            <h4 className='text_Campaign'><strong>Running during an event:</strong></h4>
                         </div>
                     </div>
                     <div className='row'>
@@ -552,7 +762,7 @@ class SubRun extends React.Component {
                             <h4 style={{ display: 'inline' }} className='text_Campaign'>{this.state.form_sel_started_by}</h4><br />
                             
                             <hr className='line_Campaign' />
-                            <h4 className='text_Campaign'>Matching Participants</h4>
+                            <h4 className='text_Campaign'>Your Record </h4>
                             <hr className='line_Campaign' />
                             {this.state.partList.map((b) =>
                                 <div className='row' className='row-hover' onClick={() => this.selectPartButtonClick( b.camp_id, b.name_part, b.addr_part, b.unit, b.unit_goal, b.date_start, b.date_end) }>
@@ -579,8 +789,42 @@ class SubRun extends React.Component {
                                     <hr className='line_Campaign' />
                                 </div>
                             )}
-                            
+
+                            {/* Sponsor list */}
                             <hr className='line_Campaign' />
+                            <h4 className='text_Campaign'>Sponsor List </h4>
+                            <hr className='line_Campaign' />
+
+                            {this.state.sponsorList.map((b) =>
+                                <div className='row' className='row-hover' >
+                                    <div key={b.addr_spon} style={{ textAlign: 'left' }} >
+                                        <br />
+                                        <br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>campaign id:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.camp_id}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>sponsor address:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.addr_spon}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>address of part:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.addr_part}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>address to pay to</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.addr_pay_to}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>unit:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.unit}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>wei per unit:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_per_unit_str}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>usd per unit:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_per_unit_usd}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>wei in escrow:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_in_escrow_str}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>usd in escrow:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_in_escrow_usd}</h4><br />
+                                        <br />
+                                    </div>
+                                    <br />
+                                    <hr className='line_Campaign' />
+                                </div>
+                            )}
+                            
                         </div>
                     </div>
                     <div className='row'>
@@ -588,85 +832,81 @@ class SubRun extends React.Component {
                         <div className='col-lg-1 col-md-1 col-sm-1 col-xs-1' style={{ textAlign: 'left' }} >
                         </div>
                         <div className='col-lg-5 col-md-5 col-sm-5 col-xs-5' style={{ textAlign: 'left' }} >
-                            <h4 style={{ display: 'inline' }} className='text_Campaign'>You will be sponsoring:</h4><br /><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>campaign id:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_camp_id}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>campaign (charity) name:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.form_sel_name}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>started by:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.form_sel_started_by}</h5><br />
+                            <hr className='line_Campaign' />
+                            <h4 style={{ display: 'inline' }} className='text_Campaign'>Your event logs:</h4><br /><br />
+                            <hr className='line_Campaign' />
+                            <h4 style={{ display: 'inline' }} className='text_Campaign'>Todays event:</h4><br /><br /><br />
+                            <h5 style={{ display: 'inline' }} className='text_Campaign'>Your units are miles, so start now</h5><br /><br />
+                            <button style={{ display: 'block' }} data-tip='start the event' className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.startEvtButtonClick} >
+                            <i className="fa fa-play font_button_contact" aria-hidden="true"></i>
+                                Start Event
+                            </button>
                             <br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>participant name:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_name_part}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>address of part:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_addr_part}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>units</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_unit}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>unit goal:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_unit_goal}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>date start:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_date_start}</h5><br />
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>date_end:</h5>
-                            <h5 style={{ display: 'inline' }} className='text_Campaign'>{this.state.formSpon_p_date_end}</h5><br />
-                        </div>
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6' style={{ textAlign: 'left', align: 'left', alignContent: 'left' }} >
                             <form style={{ textAlign: 'left', align: 'left', alignContent: 'left' }}>
-                                <div className='centerDiv_ContactForm'>
-                                    <br />
-                                    <br />
-                                    <small id="emailHelp" className="form-text text-muted text-input-desc">your ethr address</small>
-                                    <input type="text" className="form-control" id="part-addr_part" aria-describedby="emailHelp" value={this.state.formSpon_addr_spon} onChange={this.addr_sponChange.bind(this)} placeholder="your ether addr"></input>
-                                    <br />
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">start location: </small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_start_addr}  placeholder="start location"></input>
 
-                                    <small id="emailHelp" className="form-text text-muted text-input-desc">pay to address </small>
-                                    <input type="text" className="form-control" id="part-name_part" aria-describedby="emailHelp" value={this.state.formSpon_addr_pay_to} onChange={this.addr_pay_toChange.bind(this)} placeholder="pay to eth addr"></input>
-                                    <br />
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">curr location</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_start_addr}  placeholder="curr location"></input>
 
-                                    <small id="emailHelp" className="form-text text-muted text-input-desc">units</small>
-                                    <input type="text" className="form-control" id="part-unit" aria-describedby="emailHelp" value={this.state.formSpon_unit} onChange={this.unitChange.bind(this)} placeholder="units"></input>
-                                    {/* <h4 className='text_Contact'>Reason</h4> */}
-                                </div>
-                                <small id="emailHelp" className="form-text text-muted text-error-contact">{this.state.formErrorReason}</small>
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">total distance</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_dist} onChange={this.event_distChange.bind(this)} placeholder="total distance"></input>
                             </form>
+                            <br />
+
+                            <button style={{ display: 'inline' }} data-tip='start the event' className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.calcEvtButtonClick} >
+                            <i className="fa fa-calculator font_button_contact" aria-hidden="true"></i>
+                                Calc
+                            </button>
+                            <button style={{ display: 'inline' }} data-tip='start the event' className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.stopEvtButtonClick} >
+                            <i className="fa fa-stop font_button_contact" aria-hidden="true"></i>
+                                Stop Event
+                            </button>
+                            <hr className='line_Campaign' />
                         </div>
-                    
+                        <div className='col-lg-1 col-md-1 col-sm-1 col-xs-1' style={{ textAlign: 'left' }} >
+                        </div>
+                        <div className='col-lg-4 col-md-4 col-sm-4 col-xs-4' style={{ textAlign: 'left' }} >
+                            <hr className='line_Campaign' />
+                            <h4 style={{ display: 'inline' }} className='text_Campaign'>What you have earned today:</h4><br /><br />
+                            <form style={{ textAlign: 'left', align: 'left', alignContent: 'left' }}>
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">pledge (in WEI) per unit</small>
+                                <input type="text" className="form-control" id="part-date_start" aria-describedby="emailHelp" value={this.state.event_wei_per_unit_str}  placeholder="wei per unit"></input>
+
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">pledge (in eth) per unit (1 eth = $582.53)</small>
+                                <input type="text" className="form-control" id="part-date_start" aria-describedby="emailHelp" value={this.state.event_eth_per_unit}  placeholder="ether per unit"></input>
+
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">pledge (in US Dollar) per unit</small>
+                                <input type="text" className="form-control" id="part-unit_goal" aria-describedby="emailHelp" value={this.state.event_usd_per_unit} onChange={this.usd_per_unitChange.bind(this)} placeholder="usd per unit"></input>
+                                <br />
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">units earned now</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_qty_units}  placeholder="unit earned now"></input>
+                                
+                                <br />
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">total WEI</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_tot_wei_str}  placeholder="wei in escrow"></input>
+                                
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">total ether</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_tot_eth}  placeholder="eth in escrow"></input>
+
+                                <small id="emailHelp" className="form-text text-muted text-input-desc">total amount (in USD)</small>
+                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.event_tot_usd}  placeholder="usd in escrow"></input>
+                            </form>
+                            <br />
+                            <button style={{ display: 'inline' }} data-tip='money is moved IMMEDIATELY when you click button' className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.donateButtonClick} >
+                                <i className="fa fa-cloud-upload font_button_contact" aria-hidden="true"></i>
+                                Save
+                            </button>
+                            
+                            <hr className='line_Campaign' />
+                        </div>    
+                        <div className='col-lg-1 col-md-1 col-sm-1 col-xs-1' style={{ textAlign: 'left' }} >
+                        </div>
                     </div>
                     
                     <div className='row' style={{ padding: '0px 20px 0px 20px' }} >
-                        <br />
-                        <br />
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6' style={{ textAlign: 'left', align: 'left', alignContent: 'left' }} >
-                            <form style={{ textAlign: 'left', align: 'left', alignContent: 'left' }}>
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">total amount (in USD)</small>
-                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.formSpon_usd_in_escrow}  placeholder="usd in escrow"></input>
-
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">total ether</small>
-                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.formSpon_eth_in_escrow}  placeholder="eth in escrow"></input>
-
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">total WEI</small>
-                                <input type="text" className="form-control" id="part-date_end" aria-describedby="emailHelp" value={this.state.formSpon_wei_in_escrow}  placeholder="wei in escrow"></input>
-                            </form>
-                        </div>
-
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6' style={{ textAlign: 'left', align: 'left', alignContent: 'left' }} >
-                            <form style={{ textAlign: 'left', align: 'left', alignContent: 'left' }}>
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">your pledge per unit (in US Dollar)</small>
-                                <input type="text" className="form-control" id="part-unit_goal" aria-describedby="emailHelp" value={this.state.formSpon_usd_per_unit} onChange={this.usd_per_unitChange.bind(this)} placeholder="usd per unit"></input>
-
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">Ether per unit (1 eth = $582.53)</small>
-                                <input type="text" className="form-control" id="part-date_start" aria-describedby="emailHelp" value={this.state.formSpon_eth_per_unit}  placeholder="ether per unit"></input>
-
-                                <small id="emailHelp" className="form-text text-muted text-input-desc">WEI per unit</small>
-                                <input type="text" className="form-control" id="part-date_start" aria-describedby="emailHelp" value={this.state.formSpon_wei_per_unit}  placeholder="wei per unit"></input>
-                            </form>
-                        </div>
                     </div>
                     <div className='row'>
-                        <br />
-                        <button style={{ display: 'inline' }} data-tip='money is moved IMMEDIATELY when you click button' className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.donateButtonClick} >
-                            <i className="fa fa-money font_button_contact" aria-hidden="true"></i>
-                            Donate
-                        </button>
                     </div>
                     <div>
                         <br />

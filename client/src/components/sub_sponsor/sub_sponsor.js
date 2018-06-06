@@ -225,10 +225,13 @@ class SubSponsor extends React.Component {
 
 
     resetFormValues() {
+        console.log(`addr sponsor = ${this.state.formSpon_addr_spon}`);
+        console.log(`addr part = ${this.state.formSpon_p_addr_part}`);
+        console.log(`camp id = ${this.state.formSpon_p_camp_id}`);
         incroSponContractInstance.setSponsor_rec(
-                this.state.formSpon_camp_id,
+                this.state.formSpon_p_camp_id,
                 this.state.formSpon_addr_spon,
-                this.state.formSpon_addr_part,
+                this.state.formSpon_p_addr_part,
                 this.state.formSpon_addr_pay_to,
                 this.state.formSpon_unit,
                 this.state.formSpon_wei_per_unit,
@@ -240,7 +243,7 @@ class SubSponsor extends React.Component {
                 //deposit was made, now need to update the campaign
                 //uses value from sponsor for wei_in_escrow, and goals from form
                 return incroSponContractInstance.updRecvCampaign_rec(
-                    this.state.formSpon_camp_id,
+                    this.state.formSpon_p_camp_id,
                     this.state.formSpon_p_unit_goal,
                     this.state.formSpon_wei_in_escrow,
                     {from: this.state.formSpon_addr_spon}
@@ -284,6 +287,7 @@ class SubSponsor extends React.Component {
         .then((result2) => {
             console.log(`participants length=${result2}`);
             console.log(result2);
+            console.log(`incoming camp id = ${_camp_id}`);
             return incroSponContractInstance.getNumParticipantForCampaign(_camp_id);
         }).then((result) => {
             // console.log('num of participants for camp = ');

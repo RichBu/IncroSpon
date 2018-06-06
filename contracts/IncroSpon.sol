@@ -120,7 +120,7 @@ contract IncroSpon is Ownable{
     function getNumSponsorsForCampaign( uint256 _camp_id ) public view returns( uint256 )  {
         require(_camp_id <= campaigns.length);
         uint256 numMatches = 0;
-        for(uint256 i = 0; i<=sponsors.length; i++)
+        for(uint256 i = 0; i<sponsors.length; i++)
         {
             if (sponsors[i].camp_id == _camp_id )  numMatches++;
         }  
@@ -139,11 +139,11 @@ contract IncroSpon is Ownable{
         for(uint256 i = 0; i < sponsors.length; i++)
         {
             if (sponsors[i].camp_id == _camp_id )  {
-                numMatches++;
                 if (numMatches == _matchNum) {
                     sr = sponsors[_camp_id];
                     break;
                 }
+                numMatches++;
             }
         }    
         return ( sr.addr_spon, sr.addr_part, sr.addr_pay_to, sr.unit, sr.wei_per_unit, sr.wei_in_escrow );
@@ -228,6 +228,7 @@ contract IncroSpon is Ownable{
     }  //get particpant record that matches the participant
 
 
+
     function getEventPayLogsLen() view external returns(uint256){
         return eventpaylogs.length;
     }
@@ -246,7 +247,7 @@ contract IncroSpon is Ownable{
 
 
     function getEventPayLogsInCampaign_rec( uint256 _camp_id, uint256 _matchNum ) 
-    public view returns( address, address, uint256, int8, int32, uint256 ) {
+    public view returns( uint256, address, address, uint256, int8, int32, uint256 ) {
         //this will return a matching record for a participant, which is the _matchNum
         // can find out the number of matching items by running the getNum function
         require(_camp_id <= campaigns.length);
@@ -262,7 +263,7 @@ contract IncroSpon is Ownable{
                 }
             }
         }    
-        return ( er.addr_part, er.addr_spon, er.date_event, er.unit, er.qty_unit, er.wei_paid );
+        return ( er.camp_id, er.addr_part, er.addr_spon, er.date_event, er.unit, er.qty_unit, er.wei_paid );
     }
 
 
@@ -287,6 +288,16 @@ contract IncroSpon is Ownable{
     }
 
 
+    function updPayCampaign_rec(uint256 _camp_id, address _addr_send_to, uint256 _wei_in_escrow_pay) external returns (uint256) {
+        //uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;
+        //***  need to use safemath here to add to total
+        // campaigns[_camp_id].unit_goal += _unit_goal_recv;
+        _addr_send_to.transfer(_wei_in_escrow_pay);
+        campaigns[_camp_id].wei_in_escrow -= _wei_in_escrow_pay;
+    }
+
+
 
     //functions to write to the contract
     function setPart_rec(uint256 _camp_id,address _addr_part,string _name_part,int8 _unit,
@@ -305,6 +316,15 @@ contract IncroSpon is Ownable{
         //campaigns.length += 1;    
 
         sponsors.push(Sponsor(_camp_id, _addr_spon, _addr_part, _addr_pay_to, _unit, _wei_per_unit, _wei_in_escrow));
+    }
+
+
+    function setEventLog_rec(uint256 _camp_id, address _addr_part, address _addr_spon, uint256 _date_event, int8 _unit,
+    int32 _qty_unit, uint256 _wei_paid ) external returns (uint256) {
+        //uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;
+        
+        eventpaylogs.push(EventPayLog(_camp_id, _addr_part, _addr_spon, _date_event, _unit, _qty_unit, _wei_paid));
     }
 
 }
