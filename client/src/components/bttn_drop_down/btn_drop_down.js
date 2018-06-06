@@ -24,8 +24,11 @@ const btn_drop_down = () => {
                 <li role="separator" className="divider"></li>
                 <li><Link to='/campaigns'>Campaigns</Link></li>
                 <li><Link to='/participant'>Participant</Link></li>
-                <li><Link to='/sponsors'>Sponsor</Link></li>
-                <li><Link to='/dispersement'>Dispersement</Link></li>
+                <li><Link to='/sponsor'>Sponsor</Link></li>
+                <li><Link to='/run'>Run Event</Link></li>
+                <li role="separator" className="divider"></li>
+                <li><Link to='/close'>Close & reconcile</Link></li>
+                <li><Link to='/reports'>Reports</Link></li>
                 <li role="separator" className="divider"></li>
                 <li><a href="/info">
                 <i className="fa fa-info font_style_button" aria-hidden="true"></i>

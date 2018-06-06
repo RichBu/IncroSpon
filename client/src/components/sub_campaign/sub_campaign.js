@@ -13,6 +13,7 @@ class SubCampaign extends React.Component {
         super(props);
         // this.categoryClick = this.categoryCick.bind(this);
         this.state = {
+            ethConv: 582.53,
             xCoord: 0,
             yCoord: 0,
             form_name: '',
@@ -35,6 +36,7 @@ class SubCampaign extends React.Component {
                     unit_so_far: 0,
                     wei_paid_out: 0,
                     wei_in_escrow: 0,
+                    usd_in_escrow: 0
                 },
                 {
                     camp_id: 102,
@@ -45,6 +47,7 @@ class SubCampaign extends React.Component {
                     unit_so_far: 0,
                     wei_paid_out: 0,
                     wei_in_escrow: 0,
+                    usd_in_escrow: 0
                 }
             ] //projList
         };
@@ -109,8 +112,10 @@ class SubCampaign extends React.Component {
             }).then((data_rec) => {
                 let campArray = [];
                 for (var i = 0; i < data_rec.length; i++) {
-                    let tempVal = parseInt(data_rec[i][3]);
-                    console.log(tempVal);
+                    let tempVal = parseInt(data_rec[i][6]);
+                    const bal_wei_BN = new this.state.web3.utils.toBN(tempVal);
+                    const bal_eth = this.state.web3.utils.fromWei(bal_wei_BN);
+                    const bal_usd = parseFloat(bal_eth) * this.state.ethConv;
                     campArray.push(
                         {
                             camp_id: i,
@@ -120,7 +125,8 @@ class SubCampaign extends React.Component {
                             unit_goal: parseInt(data_rec[i][3]),
                             unit_so_far: parseInt(data_rec[i][4]),
                             wei_paid_out: parseInt(data_rec[i][5]),
-                            wei_in_escrow: parseInt(data_rec[i][6])
+                            wei_in_escrow: parseInt(data_rec[i][6]),
+                            usd_in_escrow: bal_usd
                         }
                     );
                     console.log(data_rec[i]);
@@ -277,6 +283,8 @@ class SubCampaign extends React.Component {
                                         <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_paid_out}</h4><br />
                                         <h5 style={{ display: 'inline' }} className='text_Campaign'>wei in escrow:</h5>
                                         <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.wei_in_escrow}</h4><br />
+                                        <h5 style={{ display: 'inline' }} className='text_Campaign'>usd in escrow:</h5>
+                                        <h4 style={{ display: 'inline' }} className='text_Campaign'>{b.usd_in_escrow}</h4><br />
                                         <br />
                                     </div>
                                     <br />

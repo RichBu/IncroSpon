@@ -6,6 +6,8 @@ import SubAbout from './../sub_about/';
 import SubInfo from './../sub_info/';
 import SubCampaign from './../sub_campaign/';
 import SubParticipant from './../sub_participant/';
+import SubSponsor from './../sub_sponsor/';
+import SubRun from './../sub_run/';
 
 
 //import { Redirect } from "react-router-dom";
@@ -45,6 +47,12 @@ const Routes = () => {
                         </Switch>
                         <Switch>
                             <Route exact path='/participant' component={SubParticipant} />
+                        </Switch>
+                        <Switch>
+                            <Route exact path='/sponsor' component={SubSponsor} />
+                        </Switch>
+                        <Switch>
+                            <Route exact path='/run' component={SubRun} />
                         </Switch>
                     </main>
                     <Footer />

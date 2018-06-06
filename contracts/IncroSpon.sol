@@ -56,7 +56,7 @@ contract IncroSpon is Ownable{
     function testSet(uint x) public {
         storedData = x;
         // campaigns.push(Campaign(0,"testSet push", 0, 0, 0, 0, 0, 0));
-   }
+    }
 
     function testGet() public view returns (uint) {
         return storedData;
@@ -65,6 +65,28 @@ contract IncroSpon is Ownable{
     function testPay() public payable {
         storedData = storedData;
     }
+
+
+    function deposit(uint256 amount) payable public {
+        //msg.value represents the ether that the message’s sender attached to a transaction message.
+        require(msg.value == amount);
+    }
+
+
+    function getBalance() public view returns (uint256) {
+        //this return's the contract's address
+        // doing address.balance would return any address's balance
+        return address(this).balance;
+    }
+
+
+    //One important property of smart contracts is that there is absolutely no way to withdraw ether from a contract other than through execution of some function that the contract exposes. There are no “backdoors” that can allow the contract author or deployer to withdraw ether without going through the contract’s exposed functions. This is one fundamental reason why a well-written contract can be trusted to handle ether on behalf of users—the users can see the code and, therefore, the means by which owned ether will be used by the contract.
+    function withdraw() external onlyOwner{
+        //always use transfer, don't use send when transferring ether out of a smart contract; because transfer will abort, send won't
+        msg.sender.transfer(address(this).balance);
+    }
+
+
 
     function getCampaignsLen() view external returns(uint256){
         return campaigns.length;
@@ -78,7 +100,7 @@ contract IncroSpon is Ownable{
         Campaign memory cr = campaigns[_camp_id];
         return ( cr.name, cr.started_by, cr.end_date, cr.unit_goal, cr.unit_so_far, cr.wei_paid_out, cr.wei_in_escrow );
     }
-
+                                                      
 
     function getCampaignBal_rec( uint256 _camp_id ) public view returns(
     string, address, uint256, int32, int32, uint256, uint256 
@@ -170,7 +192,9 @@ contract IncroSpon is Ownable{
     }
 
 
-    //the next two functions are needed when a participant is starting a 
+
+    //the next two functions are needed when a participant is starting 
+    //to run during an event
     function getNumCampaignForParticipant( address _addr_part ) 
     public view returns( uint256 ) {
         //for a given the participant who has called this, find out
@@ -178,14 +202,14 @@ contract IncroSpon is Ownable{
         uint256 numMatches = 0;
         for(uint256 i = 0; i < participants.length; i++)
         {
-            if (participants[i].addr_part == _addr_part )  numMatches++;
+            if (participants[i].addr_part == _addr_part)  numMatches++;            
         }  
         return ( numMatches );
     }
 
 
     function getParticipantForParticipant_rec( address _addr_part, uint256 _matchNum ) 
-    public view returns(  address, string, int8, int32, uint256, uint256 ) {
+    public view returns( uint256, address, string, int8, int32, uint256, uint256  ) {
         //this will return a matching record for a matching part addr, which is the _matchNum
         // can find out the number of matching items by running the getNum function
         uint256 numMatches = 0;
@@ -193,14 +217,14 @@ contract IncroSpon is Ownable{
         for(uint256 i = 0; i < participants.length; i++)
         {
             if (participants[i].addr_part == _addr_part )  {
-                numMatches++;
                 if (numMatches == _matchNum) {
                     pr = participants[i];
-                    break;
+                    //break;
                 }
+                numMatches++;
             }
         }    
-        return ( pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
+        return ( pr.camp_id, pr.addr_part, pr.name_part, pr.unit, pr.unit_goal, pr.date_start, pr.date_end );
     }  //get particpant record that matches the participant
 
 
@@ -234,7 +258,7 @@ contract IncroSpon is Ownable{
                 numMatches++;
                 if (numMatches == _matchNum) {
                     er = eventpaylogs[_camp_id];
-                    break;
+                    //break;
                 }
             }
         }    
@@ -254,6 +278,15 @@ contract IncroSpon is Ownable{
         campaigns.push(Campaign(_camp_id, _name, _started_by, _end_date, _unit_goal, _unit_so_far, _wei_paid_out, _wei_in_escrow));
     }
 
+    function updRecvCampaign_rec(uint256 _camp_id, int32 _unit_goal_recv, uint256 _wei_in_escrow_recv) external returns (uint256) {
+        //uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;
+        //***  need to use safemath here to add to total
+        campaigns[_camp_id].unit_goal += _unit_goal_recv;
+        campaigns[_camp_id].wei_in_escrow += _wei_in_escrow_recv;
+    }
+
+
 
     //functions to write to the contract
     function setPart_rec(uint256 _camp_id,address _addr_part,string _name_part,int8 _unit,
@@ -262,6 +295,16 @@ contract IncroSpon is Ownable{
         //campaigns.length += 1;
         
         participants.push(Participant(_camp_id, _addr_part, _name_part, _unit, _unit_goal,_date_start, _date_end));
+    }
+
+
+    //functions to write to the contract
+    function setSponsor_rec(uint256 _camp_id,address _addr_spon, address _addr_part, address _addr_pay_to, int8 _unit,
+    uint256 _wei_per_unit, uint256 _wei_in_escrow) external returns (uint256) {
+        //uint256 _camp_id = campaigns.length;
+        //campaigns.length += 1;    
+
+        sponsors.push(Sponsor(_camp_id, _addr_spon, _addr_part, _addr_pay_to, _unit, _wei_per_unit, _wei_in_escrow));
     }
 
 }

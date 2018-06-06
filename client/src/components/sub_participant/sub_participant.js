@@ -171,6 +171,8 @@ class SubParticipant extends React.Component {
 
 
     resetFormValues() {
+        console.log('set part , comp id=');
+        console.log(this.state.form_sel_camp_id);
         incroSponContractInstance.setPart_rec(
             this.state.form_sel_camp_id,
             this.state.form_addr_part,
