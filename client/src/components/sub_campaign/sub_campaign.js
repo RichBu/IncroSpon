@@ -330,11 +330,14 @@ class SubCampaign extends React.Component {
                                 </div>
                                 <small id="emailHelp" className="form-text text-muted text-error-contact">{this.state.formErrorReason}</small>
                             </form>
+                            <br />
+                            <br />
+                            <button className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.newCampaignButtonClick} >
+                                {/* <i className="fa fa-envelope font_button_contact" aria-hidden="true"></i> */}
+                                New Campaign
+                            </button>
+                            
                         </div>
-                        <button className="btn btn-default btn-lg bttnHeader bttn-contact" onClick={this.newCampaignButtonClick} >
-                        {/* <i className="fa fa-envelope font_button_contact" aria-hidden="true"></i> */}
-                        New Campaign
-                        </button>
                     </div>
                     <div className='row'>
                     </div>

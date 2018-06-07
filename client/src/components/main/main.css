@@ -32,10 +32,10 @@ imageAnimation {
     margin: 0px;
 }
 
-/* html, body {
-    background : url(images/Calc_02_full.jpg) no-repeat center center fixed;
+html, body {
+    background : url(images/BC_IncSpon_Back_01.png) no-repeat center center fixed;
     background-size: cover;
-} */
+}
 
 .text1 {
     position:absolute;
